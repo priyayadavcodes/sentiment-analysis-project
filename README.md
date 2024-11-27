@@ -32,5 +32,14 @@ In the development phase, different models, including Vanilla RNN and GRU, were 
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/your-username/sentiment-analysis-app.git
-   cd sentiment-analysis-app
+   git clone https://github.com/priyayadavcodes/sentiment-analysis-project.git
+   cd sentiment-analysis-project
+   ```
+
+2. **Run Docker Compose File**:
+
+   ```bash
+   docker compose build
+   docker compose up -d
+   ```
+   The app will run on port 8502
