@@ -106,8 +106,6 @@ def perform_sentiment_analysis(text, device='cpu'):
 
 # Main UI
 
-# Navigation buttons at the top of the page
-
 # Main UI
 st.markdown(
     """
@@ -126,60 +124,40 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Navigation buttons at the top of the page
+# Navigation button for GitHub Repository
 st.markdown(
     """
-    <div style="display: flex; gap: 10px; margin-bottom: 30px; position: fixed; top: 9%; left: 16%; transform: translateX(50%);">
-        <a href="?page=home" style="background-color: #535353; color: white; padding: 3px 20px; border-radius: 5px; text-decoration: none; font-size: 16px;">Home</a>
-        <a href="?page=app" style="background-color: #535353; color: white; padding: 3px 20px; border-radius: 5px; text-decoration: none; font-size: 16px;">App</a>
-        <a href="https://github.com/priyayadavcodes/sentiment-analysis-project" target="_blank" style="background-color: #535353; color: white; padding: 5px 20px; border-radius: 5px; text-decoration: none; font-size: 16px;">GitHub Repository</a>
+    <div style="position: fixed; top: 13%; right: 14%;">
+        <a href="https://github.com/priyayadavcodes/sentiment-analysis-project" 
+           target="_blank" 
+           style="background-color: #535353; color: white; padding: 5px 20px; border-radius: 5px; text-decoration: none; font-size: 16px;">
+           GitHub Repository
+        </a>
     </div>
     """,
     unsafe_allow_html=True
 )
 
 
-
-# Initialize session state variables
-if 'page' not in st.session_state:
-    st.session_state['page'] = 'home'
-
-# Retrieve query parameter for the page
-page = st.query_params.get("page", ["home"])[0]
-
-st.session_state['page'] = page
-
-if st.session_state['page'] == 'home':
-    st.title("Sentiment Analysis App")
-    st.write(
-        "- **Text Vectorizer**: TF-IDF\n"
-        "- **Underlying Model**: LSTM"
-    )
-    display_flow_image()
-    st.empty()
-    
-elif st.session_state['page'] == 'app':
-    st.title("Sentiment Analysis App")
-    # Input for sentiment analysis
-    
-    st.markdown("""
+# App Page
+st.title("Sentiment Analysis App")
+st.markdown("""
 - **Enter Review**: Type or paste your review (minimum 10 words required).
 - **Click "Analyze"**: To start the sentiment analysis.
 - **Word Check**: A warning appears if fewer than 10 words or if text is empty.  
   If so, retry with more words.
 """)
 
+text_input = st.text_area("Enter your review for sentiment analysis (minimum 10 words required):", "")
+word_count = len(text_input.split())
 
-    text_input = st.text_area("Enter your review for sentiment analysis (minimum 10 words required):", "")
-    word_count = len(text_input.split())
-    
-    if st.button("Analyze"):
-        if word_count >= 10:
-            with st.spinner("Analyzing sentiment..."):
-                logger.info(f"User input received for analysis: {text_input}")
-                sentiment = perform_sentiment_analysis(text_input)
-                st.success(f"Sentiment: {sentiment}")
-        elif word_count > 0:
-            st.warning("Please enter at least 10 words for analysis.")
-        else:
-            st.warning("Please enter some text to analyze.")
+if st.button("Analyze"):
+    if word_count >= 10:
+        with st.spinner("Analyzing sentiment..."):
+            logger.info(f"User input received for analysis: {text_input}")
+            sentiment = perform_sentiment_analysis(text_input)
+            st.success(f"Sentiment: {sentiment}")
+    elif word_count > 0:
+        st.warning("Please enter at least 10 words for analysis.")
+    else:
+        st.warning("Please enter some text to analyze.")
